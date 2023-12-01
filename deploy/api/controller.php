@@ -57,12 +57,17 @@ use Psr\Http\Message\ServerRequestInterface as Request;
 
 	// APi d'authentification générant un JWT
 	function postLogin (Request $request, Response $response, $args) {   
-	    
-		$flux = '{"nom":"martin","prenom":"jean"}';
-	    
-	    $response = createJwT ($response);
-	    $response->getBody()->write($flux );
-	    
+
+	    $login = $request.getParam->('login');
+	    $password = $request.getParam->('password');
+
+	    if($login == 'test' && $password == 'password') {
+	    	$flux = '{"nom":"martin","prenom":"jean"}';
+
+        	$response = createJwT ($response);
+        	$response->getBody()->write($flux );
+        }
+
 	    return addHeaders ($response);
 	}
 
