@@ -1,0 +1,52 @@
+[
+  {
+    "ref": "PRD001",
+    "designation": "Ordinateur portable",
+    "prix": 899.99
+  },
+  {
+    "ref": "PRD002",
+    "designation": "Smartphone",
+    "prix": 599.99
+  },
+  {
+    "ref": "PRD003",
+    "designation": "Caméra numérique",
+    "prix": 349.95
+  },
+  {
+    "ref": "PRD004",
+    "designation": "Casque audio sans fil",
+    "prix": 129.99
+  },
+  {
+    "ref": "PRD005",
+    "designation": "Enceinte Bluetooth",
+    "prix": 79.99
+  },
+  {
+    "ref": "PRD006",
+    "designation": "Tablette tactile",
+    "prix": 449.99
+  },
+  {
+    "ref": "PRD007",
+    "designation": "Écouteurs intra-auriculaires",
+    "prix": 49.99
+  },
+  {
+    "ref": "PRD008",
+    "designation": "Imprimante multifonction",
+    "prix": 199.99
+  },
+  {
+    "ref": "PRD009",
+    "designation": "Téléviseur LED 4K",
+    "prix": 799.99
+  },
+  {
+    "ref": "PRD010",
+    "designation": "Souris de jeu",
+    "prix": 59.99
+  }
+]
