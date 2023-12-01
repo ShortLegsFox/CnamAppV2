@@ -65,8 +65,8 @@ use Slim\Factory\AppFactory;
 
         if ($login === 'emma' && $password === 'toto') {
             $data = [
-               "nom" => "martin",
-               "prenom" => "jean"
+               "nom" => "BELLOT",
+               "prenom" => "Ian"
             ];
 
             $response = createJWT($response);
