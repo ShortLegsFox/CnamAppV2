@@ -63,7 +63,7 @@ use Slim\Factory\AppFactory;
         $login = $body['login'];
         $password = $body['password'];
 
-        if ($login === 'utilisateur' && $password === 'motdepasse') {
+        if ($login === 'emma' && $password === 'toto') {
             $data = [
                "nom" => "martin",
                "prenom" => "jean"
