@@ -56,31 +56,27 @@ use Psr\Http\Message\ServerRequestInterface as Request;
 	}
 
 	// APi d'authentification générant un JWT
-	function postLogin(Request $request, Response $response, $args) {
-        $data = $request->getParsedBody();
+	function postLogin (Request $request, Response $response, $args) {
 
-        if (isset($data['login']) && isset($data['password'])) {
-            $login = $data['login'];
-            $password = $data['password'];
+       $body = $request->getParsedBody();
+        $login = $body['login'];
+        $password = $body['password']
 
-            if ($login === 'utilisateur' && $password === 'motdepasse') {
-                $responseData = [
-                    "nom" => "martin",
-                    "prenom" => "jean"
-                ];
+        if ($login === 'utilisateur' && $password === 'motdepasse') {
+            $data = [
+               "nom" => "martin",
+               "prenom" => "jean"
+            ];
 
-                $response = createJWT($response);
+            $response = createJWT($response);
 
-                $response->getBody()->write(json_encode($responseData));
+            $response->getBody()->write(json_encode($data));
 
-                return addHeaders($response);
-            } else {
-                $response->getBody()->write("Identifiants invalides");
-                return $response->withStatus(401);
-            }
+            return addHeaders($response);
         } else {
-            $response->getBody()->write("Champs 'login' et 'password' requis");
-            return $response->withStatus(400); 
-        }
+            $response->getBody()->write("Identifiants invalides");
+
+            return $response->withStatus(401);
+            }
 	}
 
