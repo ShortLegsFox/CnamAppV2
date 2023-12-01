@@ -28,7 +28,7 @@ use Slim\Factory\AppFactory;
 
 	// API Nécessitant un Jwt valide
 	function getCatalogue (Request $request, Response $response, $args) {
-	    $productsFromJson = file_get_content('../assets/mock/products.json');
+	    $productsFromJson = file_get_contents('../assets/mock/products.json');
 	    $data = json_decode($productsFromJson, true);
 
 	    if ($data === null) {
