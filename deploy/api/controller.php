@@ -28,8 +28,15 @@ use Slim\Factory\AppFactory;
 
 	// API Nécessitant un Jwt valide
 	function getCatalogue (Request $request, Response $response, $args) {
-	    $flux = '[{"titre":"linux","ref":"001","prix":"20"},{"titre":"java","ref":"002","prix":"21"},{"titre":"windows","ref":"003","prix":"22"},{"titre":"angular","ref":"004","prix":"23"},{"titre":"unix","ref":"005","prix":"25"},{"titre":"javascript","ref":"006","prix":"19"},{"titre":"html","ref":"007","prix":"15"},{"titre":"css","ref":"008","prix":"10"}]';
-	    
+	    $productsFromJson = file_get_content('../assets/mock/products.json');
+	    $data = json_decode($productsFromJson, true);
+
+	    if ($data === null) {
+            $response->getBody()->write("Erreur lors du décodage JSON");
+            return $response->withStatus(500); // Code HTTP 500 pour une erreur interne du serveur
+        }
+
+	    $flux = json_encode($data);
 	    $response->getBody()->write($flux);
 	    
 	    return addHeaders ($response);
