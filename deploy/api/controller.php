@@ -66,8 +66,10 @@ use Psr\Http\Message\ServerRequestInterface as Request;
 
         	$response = createJwT ($response);
         	$response->getBody()->write($flux );
+                return addHeaders($response);
+        } else {
+            $response->getBody()->write("Identifiants invalides");
+            return $response->withStatus(401);
         }
-
-	    return addHeaders ($response);
 	}
 
