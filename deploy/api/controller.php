@@ -61,7 +61,7 @@ use Slim\Factory\AppFactory;
 
        $body = $request->getParsedBody();
         $login = $body['login'];
-        $password = $body['password']
+        $password = $body['password'];
 
         if ($login === 'utilisateur' && $password === 'motdepasse') {
             $data = [
