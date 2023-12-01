@@ -1,0 +1,4 @@
+GET: /catalogue
+tests:
+    - status: 200
+    - json.size : . > 0

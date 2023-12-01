@@ -1,0 +1,246 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+<title>dev 4/4</title>
+<meta name="description" content="reqman 3.0.4">
+<style>
+* { box-sizing: border-box;}
+.click {cursor:pointer}
+html,body {width:100%;height:100%;margin:0px;padding:0px}
+h3,h4 {padding:0px;margin:0px}
+h3 {color: blue;margin-top:22px;}
+h4 {padding:4px;background:#eee}
+h4:hover {background: linear-gradient(to right,#EEE,white) !important}
+h4 i {color:#AAA;font-weight: normal;font-size:0.9em}
+body {font-family: sans-serif;font-size:90%}
+pre {padding:4px;border:1px solid #CCC;max-height:300px;margin:2px;width:95%;display:block;overflow:auto;background:white}
+.OK {color:green}
+.KO {color:red}
+div.r {margin:4px;background: linear-gradient(#EEE,white);margin-left:10px}
+div.hide > div.h {background:white}
+div.hide > h4 {background:white}
+div.h {display:flex; flex-flow: row nowrap;padding-left:10px}
+div.h > div {flex: 1 0 50%}
+.nonp * {color:#888 !important;text-decoration: line-through;}
+.expanderContent   {
+    padding: 0;
+    max-height: 700px;
+    opacity: 1;
+    overflow-y: auto;
+    transition: 0.3s ease all;
+    padding:4px;
+    font-size:0.9em;
+}
+.hide .expanderContent {
+    max-height: 0;
+    opacity: 0;
+    padding:0px
+}
+
+.cc:before{
+  content:url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAARCAYAAADUryzEAAAABmJLR0QA/wD/AP+gvaeTAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAB3RJTUUH5AMVCjI2TjtqdwAAAKlJREFUOMvd1LEJAjEYxfHfSUC0EezcQRB7KxsXcABLwQlcwh0EwQGcwDEcwcLCVvG0SXVezlMLwQevSPj4f/keSaCPE+41/KSABVpYx3VK7RQgwxmzwn6qHvJojUJBJx71+sI3TMo6LSN5XzFKjgG26BYBzdhhrFo7jMpGEDPJ1FTDl/oTwFuhlQFWmH4KCDhE/yaDUHJNAzap5xtrhqncejjW+BcumMMD+Ycv+JwSPxAAAAAASUVORK5CYII=) ;
+  position:relative;
+  left:0px;
+  top:5px;
+ }
+
+.blinking{
+    animation:blinkingText .3s;
+}
+@keyframes blinkingText{
+    0%{     opacity: 1 }
+    60%{    opacity: 0 }
+    100%{   opacity: 1 }
+}
+
+</style>
+<script>
+function copyToClipboard( obj ) {
+    obj.classList.toggle("blinking")
+    setTimeout( function() {obj.classList.toggle("blinking")}, 300)
+    var str=obj.textContent;
+
+    const el = document.createElement('textarea');
+    el.value = str;
+    document.body.appendChild(el);
+    el.select();
+    document.execCommand('copy');
+    document.body.removeChild(el);
+};
+</script>
+</head>
+<body>
+<div class="h" style="position:sticky">
+    <div>
+        <span style="float:right;padding:4px"><b>dev</b> 2023-11-26 18:07:02<br/>
+            <span style="float:right">4/4</span>
+        </span>
+    </div>
+</div>
+
+<div class="f">
+    <h3>File: BEGIN</h3>
+
+    <div class="r hide">
+        <h4 class="click" onclick="this.parentElement.classList.toggle('hide')" title="Click to show/hide details">
+            <b>POST</b>
+            https://cnamdocker.onrender.com/api/utilisateur/login
+            <b style="float:right">
+                    200
+            </b>
+            <br/>
+            <i></i>
+
+        </h4>
+
+<div class="h s expanderContent"><a class="cc click" onclick="copyToClipboard( this.parentNode )" title="copy"></a>
+    <div style="width:50%">
+<pre>
+POST https://cnamdocker.onrender.com/api/utilisateur/login
+<b>Content-Type</b>: application/x-www-form-urlencoded
+	login: emma
+	password: toto</pre>
+--> HTTP/1.1 200 OK
+
+<pre>
+<b>Date</b>: Sun, 26 Nov 2023 17:06:53 GMT
+<b>Content-Type</b>: application/json
+<b>Content-Length</b>: 52
+<b>Connection</b>: keep-alive
+<b>CF-Ray</b>: 82c3b97a4ae76ef7-CDG
+<b>CF-Cache-Status</b>: DYNAMIC
+<b>Access-Control-Allow-Origin</b>: *
+<b>Authorization</b>: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyaWQiOiJlbW1hIiwiaWF0IjoxNzAxMDE4NDEzLCJleHAiOjE3MDEwMTkwMTN9.t34rN-Y4QZe6UUrl5MfUhkzr_dnaJ9jz2IZ5cfaISfA
+<b>Content-Encoding</b>: gzip
+<b>Vary</b>: Accept-Encoding
+<b>Access-Control-Allow-Headers</b>: Origin, X-Requested-With, Content-Type, Accept, Authorization
+<b>Access-Control-Allow-Methods</b>: GET, POST, PUT, DELETE, OPTIONS
+<b>Access-Control-Expose-Headers</b>: Authorization
+<b>rndr-id</b>: 7d4f9a2f-99cc-4954
+<b>x-powered-by</b>: PHP/7.4.33
+<b>x-render-origin-server</b>: Apache/2.4.54 (Debian)
+<b>Server</b>: cloudflare
+<b>alt-svc</b>: h3=&quot;:443&quot;; ma=86400
+{
+    &quot;nom&quot;: &quot;martin&quot;,
+    &quot;prenom&quot;: &quot;jean&quot;
+}</pre>
+    </div>
+</div>
+
+
+
+<div class="h">
+    <div style="width:50%" class="False">
+            <li class="OK" title="200">OK : status = 200</li>
+            <li class="OK" title="Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyaWQiOiJlbW1hIiwiaWF0IjoxNzAxMDE4NDEzLCJleHAiOjE3MDEwMTkwMTN9.t34rN-Y4QZe6UUrl5MfUhkzr_dnaJ9jz2IZ5cfaISfA">OK : headers.Authorization != null</li>
+    </div>
+</div>
+
+    </div>
+
+
+</div>
+<div class="f">
+    <h3>File: test.yml</h3>
+
+    <div class="r hide">
+        <h4 class="click" onclick="this.parentElement.classList.toggle('hide')" title="Click to show/hide details">
+            <b>GET</b>
+            https://cnamdocker.onrender.com/api/catalogue
+            <b style="float:right">
+                    200
+            </b>
+            <br/>
+            <i></i>
+
+        </h4>
+
+<div class="h s expanderContent"><a class="cc click" onclick="copyToClipboard( this.parentNode )" title="copy"></a>
+    <div style="width:50%">
+<pre>
+GET https://cnamdocker.onrender.com/api/catalogue
+<b>Content-Type</b>: application/hal+json; charset=utf-8
+<b>Authorization</b>: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyaWQiOiJlbW1hIiwiaWF0IjoxNzAxMDE4NDEzLCJleHAiOjE3MDEwMTkwMTN9.t34rN-Y4QZe6UUrl5MfUhkzr_dnaJ9jz2IZ5cfaISfA
+</pre>
+--> HTTP/1.1 200 OK
+
+<pre>
+<b>Date</b>: Sun, 26 Nov 2023 17:06:53 GMT
+<b>Content-Type</b>: application/json
+<b>Content-Length</b>: 148
+<b>Connection</b>: keep-alive
+<b>CF-Ray</b>: 82c3b97b3b9f2a1c-CDG
+<b>CF-Cache-Status</b>: DYNAMIC
+<b>Access-Control-Allow-Origin</b>: *
+<b>Content-Encoding</b>: gzip
+<b>Vary</b>: Accept-Encoding
+<b>Access-Control-Allow-Headers</b>: Origin, X-Requested-With, Content-Type, Accept, Authorization
+<b>Access-Control-Allow-Methods</b>: GET, POST, PUT, DELETE, OPTIONS
+<b>Access-Control-Expose-Headers</b>: Authorization
+<b>rndr-id</b>: 0dcf9694-f8e6-4a07
+<b>x-powered-by</b>: PHP/7.4.33
+<b>x-render-origin-server</b>: Apache/2.4.54 (Debian)
+<b>Server</b>: cloudflare
+<b>alt-svc</b>: h3=&quot;:443&quot;; ma=86400
+[
+    {
+        &quot;prix&quot;: &quot;20&quot;,
+        &quot;ref&quot;: &quot;001&quot;,
+        &quot;titre&quot;: &quot;linux&quot;
+    },
+    {
+        &quot;prix&quot;: &quot;21&quot;,
+        &quot;ref&quot;: &quot;002&quot;,
+        &quot;titre&quot;: &quot;java&quot;
+    },
+    {
+        &quot;prix&quot;: &quot;22&quot;,
+        &quot;ref&quot;: &quot;003&quot;,
+        &quot;titre&quot;: &quot;windows&quot;
+    },
+    {
+        &quot;prix&quot;: &quot;23&quot;,
+        &quot;ref&quot;: &quot;004&quot;,
+        &quot;titre&quot;: &quot;angular&quot;
+    },
+    {
+        &quot;prix&quot;: &quot;25&quot;,
+        &quot;ref&quot;: &quot;005&quot;,
+        &quot;titre&quot;: &quot;unix&quot;
+    },
+    {
+        &quot;prix&quot;: &quot;19&quot;,
+        &quot;ref&quot;: &quot;006&quot;,
+        &quot;titre&quot;: &quot;javascript&quot;
+    },
+    {
+        &quot;prix&quot;: &quot;15&quot;,
+        &quot;ref&quot;: &quot;007&quot;,
+        &quot;titre&quot;: &quot;html&quot;
+    },
+    {
+        &quot;prix&quot;: &quot;10&quot;,
+        &quot;ref&quot;: &quot;008&quot;,
+        &quot;titre&quot;: &quot;css&quot;
+    }
+]</pre>
+    </div>
+</div>
+
+
+
+<div class="h">
+    <div style="width:50%" class="False">
+            <li class="OK" title="200">OK : status = 200</li>
+            <li class="OK" title="8">OK : json.size &gt; 0</li>
+    </div>
+</div>
+
+    </div>
+
+
+</div>
+</body>
+</html>
