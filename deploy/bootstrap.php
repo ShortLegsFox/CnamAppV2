@@ -6,12 +6,12 @@
 	$isDevMode = true;
 	$config = Setup::createYAMLMetadataConfiguration(array(__DIR__ . "/config/yaml"), $isDevMode);
 	$conn = array(
-	'host' => 'dpg-ck3ie7b6fquc73cq3a50-a.oregon-postgres.render.com',
+	'host' => 'dpg-cm23hri1hbls73bu4a30-a.oregon-postgres.render.com',
 
 	'driver' => 'pdo_pgsql',
-	'user' => 'cnam_db_92ul_user',
-	'password' => 'Z0OjNnVAavrSDdSI6biVgys2U3N52Z3Q',
-	'dbname' => 'cnam_db_92ul',
+	'user' => 'bellot_db_lokl_user',
+	'password' => 'UZ6zmzT6ivZoz6w9SLAZTfN4MQiRyqu2',
+	'dbname' => 'bellot_db_lokl',
 	'port' => '5432'
 	);
 
