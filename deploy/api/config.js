@@ -1,10 +1,10 @@
 module.exports =  {
     ACCESS_TOKEN_SECRET : "EMMA123",
     BDD : {
-    "host" :"dpg-ck3ie7b6fquc73cq3a50-a.oregon-postgres.render.com",
-    "port" : "",
-    "user" : "cnam_db_92ul_user",
-    "password" : "Z0OjNnVAavrSDdSI6biVgys2U3N52Z3Q",
-    "bdname" :"cnam_db_92ul" 
+    "host" :"dpg-cm23hri1hbls73bu4a30-a.oregon-postgres.render.com",
+    "port" : "5432",
+    "user" : "bellot_db_lokl_user",
+    "password" : "UZ6zmzT6ivZoz6w9SLAZTfN4MQiRyqu2",
+    "bdname" :"bellot_db_lokl"
     }
 }
