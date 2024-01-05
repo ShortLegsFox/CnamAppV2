@@ -87,7 +87,7 @@ use Psr\Http\Message\ServerRequestInterface as Request;
           return $response->withStatus(400)->write("Invalid gender");
         }
 
-        if (!isset($data['phone']) || !preg_match("^((\+|00)[-1])?[\s.-]?(0[\s.-]??[1-9])([\s.-]?\d{2}){4}\d$", $data['phone']))) {
+        if (!isset($data['phone']) || !preg_match("^((\+|00)[-1])?[\s.-]?(0[\s.-]??[1-9])([\s.-]?\d{2}){4}\d$", $data['phone'])) {
           return $response->withStatus(400)->write("Invalid phone number");
         }
 
