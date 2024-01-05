@@ -60,6 +60,7 @@ use Psr\Http\Message\ServerRequestInterface as Request;
         $data = $request->getParsedBody();
         $err = false;
 
+        /*
         if (!isset($data['username']) || !preg_match("/^[a-zA-Z0-9]+$/", $data['username'])) {
           $err = true;
         }
@@ -98,7 +99,7 @@ use Psr\Http\Message\ServerRequestInterface as Request;
 
         if (!isset($data['password']) || !preg_match("/^[a-zA-Z0-9]+$/", $data['password'])) {
           $err = true;
-        }
+        }*/
 
         if (!$err) {
             $utilisateur = new Utilisateur();
