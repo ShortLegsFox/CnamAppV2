@@ -17,6 +17,9 @@
 
 	// APi d'authentification générant un JWT
 	$app->post('/api/utilisateur/login', 'postLogin');
+
+	// API Creation utilisateur
+	$app->create('/api/utilisateur/usercreation', 'createUtilisateur');
 	
 	
 
