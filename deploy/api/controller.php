@@ -58,66 +58,72 @@ use Psr\Http\Message\ServerRequestInterface as Request;
         global $entityManager;
 
         $data = $request->getParsedBody();
+        $err = false;
 
         if (!isset($data['username']) || !preg_match("/^[a-zA-Z0-9]+$/", $data['username'])) {
-          return $response->getBody()->write("Invalid username");
+          $err = true;
         }
 
         if (!isset($data['lastname']) || !preg_match("/^[a-zA-Z]+$/", $data['lastname'])) {
-          return $response->getBody()->write("Invalid lastname");
+          $err = true;
         }
 
         if (!isset($data['firstname']) || !preg_match("/^[a-zA-Z]+$/", $data['firstname'])) {
-          return $response->getBody()->write("Invalid firstname");
+          $err = true;
         }
 
         if (!isset($data['address']) || !preg_match("/^[a-zA-Z0-9\s]+$/", $data['address'])) {
-          return $response->getBody()->write("Invalid address");
+          $err = true;
         }
 
         if (!isset($data['postal']) || !preg_match("/^(?:0[1-9]|[1-8]\d|9[0-8])\d{3}$/i", $data['postal'])) {
-          return $response->getBody()->write("Invalid postal");
+          $err = true;
         }
 
         if (!isset($data['city']) || !preg_match("/^[a-zA-Z]+$/", $data['city'])) {
-          return $response->getBody()->write("Invalid gender");
+          $err = true;
         }
 
         if (!isset($data['gender']) || !in_array($data['gender'], ['male', 'female', 'other'])) {
-          return $response->getBody()->write("Invalid gender");
+          $err = true;
         }
 
         if (!isset($data['phone']) || !preg_match("^((\+|00)[-1])?[\s.-]?(0[\s.-]??[1-9])([\s.-]?\d{2}){4}\d$", $data['phone'])) {
-          return $response->getBody()->write("Invalid phone number");
+          $err = true;
         }
 
         if (!isset($data['mail']) || !preg_match("^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$", $data['mail'])) {
-          return $response->getBody()->write("Invalid mail");
+          $err = true;
         }
 
         if (!isset($data['password']) || !preg_match("/^[a-zA-Z0-9]+$/", $data['password'])) {
-          return $response->getBody()->write("Invalid password");
+          $err = true;
         }
 
-        $utilisateur = new Utilisateur();
-        $utilisateur->setPrenom($data['firstname']);
-        $utilisateur->setNom($data['lastname']);
-        $utilisateur->setAdresse($data['address']);
-        $utilisateur->setCodepostal($data['postal']);
-        $utilisateur->setVille($data['city']);
-        $utilisateur->setEmail($data['mail']);
-        $utilisateur->setSexe($data['gender']);
-        $utilisateur->setLogin($data['username']);
-        $utilisateur->setPassword($data['password']);
+        if (!$err) {
+            $utilisateur = new Utilisateur();
+            $utilisateur->setPrenom($data['firstname']);
+            $utilisateur->setNom($data['lastname']);
+            $utilisateur->setAdresse($data['address']);
+            $utilisateur->setCodepostal($data['postal']);
+            $utilisateur->setVille($data['city']);
+            $utilisateur->setEmail($data['mail']);
+            $utilisateur->setSexe($data['gender']);
+            $utilisateur->setLogin($data['username']);
+            $utilisateur->setPassword($data['password']);
 
-        $entityManager->persist($utilisateur);
-        $entityManager->flush();
+            $entityManager->persist($utilisateur);
+            $entityManager->flush();
 
-        $response = addHeaders ($response);
-        $response = createJwT ($response);
-        $response->getBody()->write(json_encode(['status' => 'success']));
+            $response = addHeaders ($response);
+            $response = createJwT ($response);
+            $response->getBody()->write(json_encode(['status' => 'success']));
 
-        return addHeaders ($response);
+            return addHeaders ($response);
+        }
+        else {
+            $response = $response->withStatus(500);
+        }
     }
 
 	// API Nécessitant un Jwt valide
