@@ -122,7 +122,7 @@ use Psr\Http\Message\ServerRequestInterface as Request;
         else {
             $response = $response->withStatus(500);
         }
-        return addHeaders ($response)
+        return addHeaders ($response);
     }
 
 	// API Nécessitant un Jwt valide
