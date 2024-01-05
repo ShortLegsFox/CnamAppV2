@@ -115,11 +115,17 @@ use Psr\Http\Message\ServerRequestInterface as Request;
             $entityManager->persist($utilisateur);
             $entityManager->flush();
 
-            $response = addHeaders ($response);
-            $response = createJwT ($response);
-            $response->getBody()->write(json_encode(['status' => 'success']));
+           $response = $response->withHeader('Content-Type', 'application/json');
+           $response = $response->withHeader('Access-Control-Allow-Origin', '*');
+           $response = $response->withHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
+           $response = $response->withHeader('Access-Control-Allow-Headers', 'X-Requested-With, Content-Type, Accept, Origin, Authorization');
+           $response = $response->withHeader('Access-Control-Allow-Credentials', 'true');
+           $response = $response->withHeader('Authorization', 'Bearer ' . $jwt);
 
-            return addHeaders ($response);
+           $response = $response->withStatus(200);
+           $response->getBody()->write(json_encode(['status' => 'success']));
+
+           return $response;
         }
         else {
             $response = $response->withStatus(500);
