@@ -76,7 +76,7 @@ use Psr\Http\Message\ServerRequestInterface as Request;
           $err = true;
         }
 
-        if (!isset($data['postal']) || !preg_match("/^(?:0[1-9]|[1-8]\d|9[0-8])\d{3}$/i", $data['postal'])) {
+        if (!isset($data['postal']) || !preg_match("^\d{5}$", $data['postal'])) {
           $err = true;
         }
 
@@ -88,7 +88,7 @@ use Psr\Http\Message\ServerRequestInterface as Request;
           $err = true;
         }
 
-        if (!isset($data['phone']) || !preg_match("^((\+|00)[-1])?[\s.-]?(0[\s.-]??[1-9])([\s.-]?\d{2}){4}\d$", $data['phone'])) {
+        if (!isset($data['phone']) || !preg_match("^\d{10}$", $data['phone'])) {
           $err = true;
         }
 
