@@ -1,198 +1,111 @@
-const { v4: uuidv4 } = require ("uuid");
-const { ACCESS_TOKEN_SECRET }  = require ("../config.js");
+const {v4: uuidv4} = require("uuid");
+const {ACCESS_TOKEN_SECRET} = require("../config.js");
 
 const jwt = require('jsonwebtoken');
-
-function generateAccessToken(user) {
-    return jwt.sign(user, ACCESS_TOKEN_SECRET, { expiresIn: '1800s' });
-  }
-
 const db = require("../models");
 const Utilisateur = db.utilisateur;
 const Op = db.Sequelize.Op;
 
-// Find a single Utilisateur with an login
+function generateAccessToken(user) {
+    return jwt.sign(user, ACCESS_TOKEN_SECRET, {expiresIn: '1800s'});
+}
+
 exports.login = (req, res) => {
-  const utilisateur = {
-    login: req.body.login,
-    password: req.body.password
-  };
-
-  // Test
-  let pattern = /^[A-Za-z0-9]{1,20}$/;
-  if (pattern.test(utilisateur.login) && pattern.test(utilisateur.password)) {
-     Utilisateur.findOne({ where: { login: utilisateur.login } })
-    .then(data => {
-      if (data) {
-        const user = {
-          id: data.id,
-          name: data.nom,
-          email: data.email
-        };
-      
-        let accessToken = generateAccessToken(user);
-        res.setHeader('Authorization', `Bearer ${accessToken}`);
-        res.send(data);
-      } else {
-        res.status(404).send({
-          message: `Cannot find Utilisateur with login=${utilisateur.login}.`
-        });
-      }
-    })
-    .catch(err => {
-      res.status(400).send({
-        message: "Error retrieving Utilisateur with login=" + utilisateur.login
-      });
-    });
-  } else {
-    res.status(400).send({
-      message: "Login ou password incorrect" 
-    });
-  }
-};
-
-exports.create = (req, res) => {
-    // Validate request
-    if (!req.body.nom) {
-      res.status(400).send({
-        message: "Content can not be empty!"
-      });
-      return;
-    }
-  
-    const uuid = uuidv4 ();
-    // Create a Utilisateur
     const utilisateur = {
-      nom: req.body.nom,
-      prenom: req.body.prenom,
-      login: req.body.login,
-      email : req.body.email,
-      password : req.body.password,
-      id : uuid
+        login: req.body.login,
+        password: req.body.password
     };
-  
-  
-    const accessToken = generateAccessToken(utilisateur);
 
-    console.log (accessToken)
-    // Save Utilisateur in the database
-    Utilisateur.create(utilisateur)
-      .then(data => {
-        res.setHeader('Authorization', `Bearer ${accessToken}`);
-        res.send(data);
-      })
-      .catch(err => {
-        res.status(500).send({
-          message:
-            err.message || "Some error occurred while creating the Utilisateur."
+    Utilisateur.findOne({ where: { login: utilisateur.login } })
+        .then(data => {
+
+                if (data.password === utilisateur.password) {
+                    const user = {
+                        id: data.id,
+                        nom: data.nom,
+                        prenom: data.prenom,
+                        email: data.email,
+                    };
+
+                    let accessToken = generateAccessToken(user);
+                    res.setHeader('Authorization', `Bearer ${accessToken}`);
+                    user.token = accessToken;
+
+                    console.log (accessToken);
+
+                    res.send(user);
+                }
+                else{
+                    res.status(401).send({
+                        message: "Mot de passe incorrect"
+                    });
+                }
+            }
+        )
+        .catch(err => {
+            res.status(500).send({
+                message: "Nom d'utilisateur ne figure pas dans la base"
+            });
         });
-      });
-  };
-
-// Retrieve all Utilisateurs from the database.
-exports.findAll = (req, res) => {
-    const nom = req.query.nom;
-    var condition = nom ? { nom: { [Op.like]: `%${nom}%` } } : null;
-  
-    console.log ("findAll")
-
-    Utilisateur.findAll({ where: condition })
-      .then(data => {
-        res.send(data);
-      })
-      .catch(err => {
-        res.status(500).send({
-          message:
-            err.message || "Some error occurred while retrieving Utilisateur."
-        });
-      });
-  };
-
-// Find a single Utilisateur with an id
-exports.findOne = (req, res) => {
-  const id = req.params.id;
-
-  Utilisateur.findByPk(id)
-    .then(data => {
-      if (data) {
-        res.send(data);
-      } else {
-        res.status(404).send({
-          message: `Cannot find Utilisateur with id=${id}.`
-        });
-      }
-    })
-    .catch(err => {
-      res.status(500).send({
-        message: "Error retrieving Utilisateur with id=" + id
-      });
-    });
 };
 
-// Update a Utilisateur by the id in the request
-exports.update = (req, res) => {
-  const id = req.params.id;
+exports.accountcreation = (req, res) => {
+    const newUtilisateur = {
+        nom: req.body.nom,
+        prenom: req.body.prenom,
+        adresse: req.body.adresse,
+        codepostal: req.body.codepostal,
+        ville: req.body.ville,
+        sexe: req.body.sexe,
+        telephone: req.body.telephone,
+        email: req.body.email,
+        login: req.body.login,
+        password: req.body.password
+    };
 
-  Utilisateur.update(req.body, {
-    where: { id: id }
-  })
-    .then(num => {
-      if (num == 1) {
-        res.send({
-          message: "Utilisateur was updated successfully."
-        });
-      } else {
-        res.send({
-          message: `Cannot update Utilisateur with id=${id}. Maybe Utilisateur was not found or req.body is empty!`
-        });
-      }
-    })
-    .catch(err => {
-      res.status(500).send({
-        message: "Error updating Utilisateur with id=" + id
-      });
-    });
+    console.log(req.body);
+
+    Utilisateur.findOne({ where: { login: newUtilisateur.login } })
+        .then(data => {
+            if (data) {
+                res.status(401).send({
+                    message: "Nom d'utilisateur déjà utilisé!"
+                });
+            }
+            else{
+                Utilisateur.create(newUtilisateur)
+                    .then(data => {
+                        const user = {
+                            nom: data.nom,
+                            prenom: data.prenom,
+                            adresse: data.adresse,
+                            codepostal: data.codepostal,
+                            ville: data.ville,
+                            sexe: data.sexe,
+                            telephone: data.telephone,
+                            email: data.email,
+                            login: data.login,
+                            password: data.password
+                        };
+
+                        let accessToken = generateAccessToken(user);
+                        res.setHeader('Authorization', `Bearer ${accessToken}`);
+                        user.token = accessToken;
+
+                        console.log (accessToken);
+                        res.send(user);
+                    })
+                    .catch(err => {
+                        res.status(500).send({
+                            message: err.message || "Une erreur s'est produite lors de la création de l'utilisateur."
+                        });
+                    });
+            }
+        })
+        .catch(err => {
+                res.status(500).send({
+                    message: "Nom d'utilisateur déjà utilisé!"
+                });
+            }
+        );
 };
-
-// Delete a Utilisateur with the specified id in the request
-exports.delete = (req, res) => {
-  const id = req.params.id;
-
-  Utilisateur.destroy({
-    where: { id: id }
-  })
-    .then(num => {
-      if (num == 1) {
-        res.send({
-          message: "Utilisateur was deleted successfully!"
-        });
-      } else {
-        res.send({
-          message: `Cannot delete Utilisateur with id=${id}. Maybe Utilisateur was not found!`
-        });
-      }
-    })
-    .catch(err => {
-      res.status(500).send({
-        message: "Could not delete Utilisateur with id=" + id
-      });
-    });
-};
-
-// Delete all Utilisateur from the database.
-exports.deleteAll = (req, res) => {
-  Utilisateur.destroy({
-    where: {},
-    truncate: false
-  })
-    .then(nums => {
-      res.send({ message: `${nums} Utilisateur were deleted successfully!` });
-    })
-    .catch(err => {
-      res.status(500).send({
-        message:
-          err.message || "Some error occurred while removing all Utilisateurs."
-      });
-    });
-};
-
