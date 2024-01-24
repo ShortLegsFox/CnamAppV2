@@ -1,6 +1,8 @@
 const {v4: uuidv4} = require("uuid");
 const {ACCESS_TOKEN_SECRET} = require("../config.js");
 
+const bcrypt = require("bcrypt")
+const saltRounds = 10
 const jwt = require('jsonwebtoken');
 const db = require("../models");
 const util = require("util");
@@ -35,22 +37,29 @@ exports.login = (req, res) => {
 
     Utilisateur.findOne({ where: { login: utilisateur.login } })
         .then(data => {
+            if (data) {
+                bcrypt.compare(utilisateur.password, data.password, (err, result) => {
+                    if (result) {
+                        const user = {
+                            id: data.id,
+                            nom: data.nom,
+                            prenom: data.prenom,
+                            email: data.email,
+                        };
 
-                if (data.password === utilisateur.password) {
-                    const user = {
-                        id: data.id,
-                        nom: data.nom,
-                        prenom: data.prenom,
-                        email: data.email,
-                    };
+                        let accessToken = generateAccessToken(user);
+                        res.setHeader('Authorization', `Bearer ${accessToken}`);
+                        user.token = accessToken;
 
-                    let accessToken = generateAccessToken(user);
-                    res.setHeader('Authorization', `Bearer ${accessToken}`);
-                    user.token = accessToken;
+                        console.log(accessToken);
 
-                    console.log (accessToken);
-
-                    res.send(user);
+                        res.send(user);
+                    } else {
+                        res.status(401).send({
+                            message: "Mot de passe incorrect"
+                        });
+                    }
+                });
                 }
                 else{
                     res.status(401).send({
@@ -156,35 +165,43 @@ exports.accountcreation = (req, res) => {
                 res.status(401).send({
                     message: "Nom d'utilisateur déjà utilisé!"
                 });
-            }
-            else{
-                Utilisateur.create(utilisateur)
-                    .then(data => {
-                        const user = {
-                            nom: data.nom,
-                            prenom: data.prenom,
-                            adresse: data.adresse,
-                            codepostal: data.codepostal,
-                            ville: data.ville,
-                            sexe: data.sexe,
-                            telephone: data.telephone,
-                            email: data.email,
-                            login: data.login,
-                            password: data.password
-                        };
-
-                        let accessToken = generateAccessToken(user);
-                        res.setHeader('Authorization', `Bearer ${accessToken}`);
-                        user.token = accessToken;
-
-                        console.log (accessToken);
-                        res.send(user);
-                    })
-                    .catch(err => {
+            } else {
+                bcrypt.hash(utilisateur.password, saltRounds, (err, hash) => {
+                    if (err) {
                         res.status(500).send({
-                            message: err.message || "Une erreur s'est produite lors de la création de l'utilisateur."
+                            message: "Une erreur s'est produite lors de la création de l'utilisateur."
                         });
-                    });
+                    } else {
+                        utilisateur.password = hash;
+                        Utilisateur.create(utilisateur)
+                            .then(data => {
+                                const user = {
+                                    nom: data.nom,
+                                    prenom: data.prenom,
+                                    adresse: data.adresse,
+                                    codepostal: data.codepostal,
+                                    ville: data.ville,
+                                    sexe: data.sexe,
+                                    telephone: data.telephone,
+                                    email: data.email,
+                                    login: data.login,
+                                    password: data.password
+                                };
+
+                                let accessToken = generateAccessToken(user);
+                                res.setHeader('Authorization', `Bearer ${accessToken}`);
+                                user.token = accessToken;
+
+                                console.log(accessToken);
+                                res.send(user);
+                            })
+                            .catch(err => {
+                                res.status(500).send({
+                                    message: err.message || "Une erreur s'est produite lors de la création de l'utilisateur."
+                                });
+                            });
+                    }
+                });
             }
         })
         .catch(err => {
